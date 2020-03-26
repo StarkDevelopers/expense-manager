@@ -1,12 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { BrowserRouter } from 'react-router-dom';
+
+const THEME = createMuiTheme({
+  typography: {
+   "fontFamily": "\"Ubuntu\", sans-serif"
+  }
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <MuiThemeProvider theme={THEME}>
+        <App />
+      </MuiThemeProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
