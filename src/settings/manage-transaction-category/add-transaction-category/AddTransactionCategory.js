@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid, InputAdornment, Typography, InputBase, Select, MenuItem, Card, CardContent } from '@material-ui/core';
+import { Container, Grid, Typography, InputBase, Select, MenuItem, Card, CardContent } from '@material-ui/core';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
@@ -8,7 +8,7 @@ const field = (THEME) => {
     height: '3rem',
     fontFamily: "\"Ubuntu\", sans-serif",
     fontSize: '2rem',
-    backgroundImage: `linear-gradient(to right, ${THEME.mediumLightVersion}, ${THEME.mediumDarkVersion})`,
+    backgroundImage: `linear-gradient(to right, ${THEME.lightVersion}, ${THEME.mediumLightVersion})`,
     borderWidth: '0px',
     borderRadius: '0.75rem',
     boxShadow: `3px 3px 5px 1px ${THEME.boxShadow}`,
@@ -17,16 +17,16 @@ const field = (THEME) => {
     padding: '0.75rem',
     boxSizing: 'border-box',
     marginBottom: '1rem'
-  }
+  };
 };
 
 const getComponentStyle = THEME => {
-  return makeStyles(reactTheme => ({
+  return makeStyles(theme => ({
     container: {
       textAlign: 'left'
     },
     cardBody: {
-      backgroundImage: `linear-gradient(to right, ${THEME.mediumLightVersion}, ${THEME.mediumDarkVersion})`,
+      backgroundImage: `linear-gradient(to right, ${THEME.lightVersion}, ${THEME.mediumLightVersion})`,
       borderWidth: '0px',
       borderRadius: '1rem',
       boxShadow: `3px 3px 5px 1px ${THEME.boxShadow}`,
@@ -41,10 +41,6 @@ const getComponentStyle = THEME => {
       marginBottom: '1.25rem'
     },
     textField: field(THEME),
-    descriptionField: {
-      ...field(THEME),
-      fontSize: '1.5rem'
-    },
     selectField: {
       ...field(THEME),
       fontSize: '1rem',
@@ -71,7 +67,7 @@ const getComponentStyle = THEME => {
       fontSize: '1.25rem'
     }
   }));
-};
+}
 
 const getMuiTheme = THEME => {
   return createMuiTheme({
@@ -88,9 +84,9 @@ const getMuiTheme = THEME => {
       }
     }
   });
-};
+}
 
-function AddTransaction(props) {
+function AddTransactionCategory(props) {
   const theme = getMuiTheme(props.THEME);
   const useStyles = getComponentStyle(props.THEME);
   const classes = useStyles();
@@ -102,34 +98,26 @@ function AddTransaction(props) {
             <Card className={classes.cardBody}>
               <CardContent>
                 <Typography className={classes.title} gutterBottom>
-                  Add Transaction
+                  Add Transaction Category
                 </Typography>
 
                 <InputBase
                   className={classes.textField}
-                  type="number"
-                  placeholder="Transaction amount"
-                  startAdornment={<InputAdornment position="start"><Typography variant="h5" className={classes.currency}>₹</Typography></InputAdornment>}
+                  type="text"
+                  placeholder="Transaction Category"
                   inputProps={{ 'aria-label': 'naked' }} />
 
                 <ThemeProvider theme={theme}>
                   <Select
                     className={classes.selectField}
                     id="demo-simple-select"
-                    value={0}
+                    value={1}
                   >
-                    <MenuItem value={0}>None</MenuItem>
-                    <MenuItem value={1}>Salary</MenuItem>
-                    <MenuItem value={2}>Freelancing</MenuItem>
-                    <MenuItem value={3}>Shopping</MenuItem>
+                    <MenuItem value={1}>Income</MenuItem>
+                    <MenuItem value={2}>Expense</MenuItem>
+                    <MenuItem value={3}>Investment</MenuItem>
                   </Select>
                 </ThemeProvider>
-
-                <InputBase
-                  className={classes.descriptionField}
-                  type="text"
-                  placeholder="Description"
-                  inputProps={{ 'aria-label': 'naked' }} />
 
                 <Typography className={classes.buttonField}>
                   Add
@@ -149,4 +137,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(AddTransaction);
+export default connect(mapStateToProps)(AddTransactionCategory);

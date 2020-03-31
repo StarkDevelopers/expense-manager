@@ -1,59 +1,81 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Dashboard, AccountBalanceWallet, SyncAlt } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import { Dashboard, AccountBalanceWallet, SyncAlt, Settings } from '@material-ui/icons';
+import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-  },
-  gridContainer: {
-    borderBottom: '10px inset #3d4363'
-  },
-  iconsContainer: {
-    borderRadius: '1rem',
-    backgroundImage: 'linear-gradient(to bottom right, #535a7e, #3d4363, #535a7e)',
-    boxShadow: '3px 3px 5px 1px #2e324d',
-    margin: '16px',
-    marginBottom: '24px'
-  },
-  icons: {
-    backgroundImage: 'linear-gradient(to bottom right, #3d4363, #4d547a)',
-    color: '#a8aed2',
-    padding: '10px 15px',
-    borderRadius: '1rem'
-  }
-}));
+const getComponentStyle = THEME => {
+  return makeStyles(theme => ({
+    root: {
+    },
+    gridContainer: {
+      borderBottom: `10px inset ${THEME.darkVersion}`
+    },
+    iconsContainer: {
+      borderRadius: '1rem',
+      backgroundImage: `linear-gradient(to bottom right, ${THEME.lightVersion}, ${THEME.darkVersion}, ${THEME.lightVersion})`,
+      boxShadow: `3px 3px 5px 1px ${THEME.boxShadow}`,
+      margin: '16px',
+      marginBottom: '24px'
+    },
+    icons: {
+      backgroundImage: `linear-gradient(to bottom right, ${THEME.darkVersion}, ${THEME.lightVersion})`,
+      color: THEME.fontColor,
+      padding: '10px 15px',
+      borderRadius: '1rem'
+    },
+    activeLink: {
+      '& div': {
+        boxShadow: 'none',
+      }
+    }
+  }));
+}
 
-function TopBar() {
+function TopBar(props) {
+  const useStyles = getComponentStyle(props.THEME);
   const classes = useStyles();
   return (
     <div className={classes.root}>
       <Grid container direction="row" justify="center" alignItems="stretch" className={classes.gridContainer}>
         <Grid item>
-          <Link to="/">
+          <NavLink to="/" exact activeClassName={classes.activeLink}>
             <div className={classes.iconsContainer}>
               <Dashboard className={classes.icons} />
             </div>
-          </Link>
+          </NavLink>
         </Grid>
         <Grid item>
-          <Link to="/transactions">
+          <NavLink to="/transactions" exact activeClassName={classes.activeLink}>
             <div className={classes.iconsContainer}>
               <AccountBalanceWallet className={classes.icons} />
             </div>
-          </Link>
+          </NavLink>
         </Grid>
         <Grid item>
-          <Link to="/add-transaction">
+          <NavLink to="/add-transaction" exact activeClassName={classes.activeLink}>
             <div className={classes.iconsContainer}>
               <SyncAlt className={classes.icons} />
             </div>
-          </Link>
+          </NavLink>
+        </Grid>
+        <Grid item>
+          <NavLink to="/settings" exact activeClassName={classes.activeLink}>
+            <div className={classes.iconsContainer}>
+              <Settings className={classes.icons} />
+            </div>
+          </NavLink>
         </Grid>
       </Grid>
     </div>
   );
 }
 
-export default TopBar;
+const mapStateToProps = state => {
+  return {
+    THEME: state.theme
+  };
+};
+
+export default connect(mapStateToProps)(TopBar);

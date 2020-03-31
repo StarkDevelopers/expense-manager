@@ -2,75 +2,86 @@ import React, { useEffect } from 'react';
 import { Grid, Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Chart from 'chart.js';
+import { connect } from 'react-redux';
 
-const useStyles = makeStyles(theme => ({
+const getComponentStyle = THEME => {
+  return makeStyles(reactTheme => ({
     cardBody: {
-		backgroundImage: 'linear-gradient(to right, #4c5378, #464d70)',
-		borderWidth: '0px',
-		borderRadius: '1rem',
-		boxShadow: '3px 3px 5px 1px #2e324d',
-		color: '#a8aed2'
-	},
-	dashboardTile: {
-		padding: '16px'
-	}
-}));
+      backgroundImage: `linear-gradient(to right, ${THEME.mediumLightVersion}, ${THEME.mediumDarkVersion})`,
+      borderWidth: '0px',
+      borderRadius: '1rem',
+      boxShadow: `3px 3px 5px 1px ${THEME.boxShadow}`,
+      color: THEME.fontColor,
+      [reactTheme.breakpoints.down('sm')]: {
+        backgroundImage: `linear-gradient(to right, ${THEME.lightVersion}, ${THEME.mediumLightVersion})`
+      }
+    },
+    dashboardTile: {
+      padding: '16px'
+    }
+  }));
+};
 
-function SummaryChart() {
-    const classes = useStyles();
-    const chartRef = React.createRef();
-    
-    useEffect(() => {
-        const summaryChartRef = chartRef.current.getContext("2d");
-        Chart.defaults.global.legend.display = false;
-        Chart.defaults.global.defaultFontFamily = "\"Ubuntu\", sans-serif";
-        Chart.defaults.global.defaultFontColor = '#a8aed2';
-        new Chart(summaryChartRef, {
-            type: "line",
-            data: {
-                //Bring in data
-                labels: ["Jan", "Feb", "March"],
-                datasets: [
-                    {
-                        label: "Expense",
-                        data: [42560, 20175, 23450],
-                        backgroundColor: 'rgba(71, 76, 110, 0.6)',
-                        borderColor: 'rgba(53, 58, 88, 0.8)'
-                    },
-                    {
-                        label: "Income",
-                        data: [27316, 36980, 35125],
-                        backgroundColor: 'rgba(71, 76, 110, 0.6)',
-                        borderColor: 'rgba(168, 174, 210, 0.8)'
-                    }
-                ]
-            },
-            options: {
-                //Customize chart options
-                tooltips: {
-                    bodyFontColor: '#a8aed2',
-                    titleFontColor: '#a8aed2',
-                    backgroundColor: 'rgba(0, 0, 0, 0)',
-                    displayColors: false,
-                    mode: 'index',
-                }
-            }
-        });
-    }, []);
+function SummaryChart(props) {
+  const useStyles = getComponentStyle(props.THEME);
+  const classes = useStyles();
+  const chartRef = React.createRef();
 
-	return (
-		<div>
-			<Grid container>
-                <Grid item className={classes.dashboardTile} xs={12}>
-                    <Card className={classes.cardBody}>
-                        <CardContent>
-                            <canvas id="myChart" ref={chartRef} />
-                        </CardContent>
-                    </Card>
-                </Grid>
-			</Grid>
-		</div>
-	);
+  useEffect(() => {
+    const summaryChartRef = chartRef.current.getContext("2d");
+    Chart.defaults.global.legend.display = false;
+    Chart.defaults.global.defaultFontFamily = "\"Ubuntu\", sans-serif";
+    Chart.defaults.global.defaultFontColor = props.THEME.fontColor;
+    new Chart(summaryChartRef, {
+      type: "line",
+      data: {
+        labels: ["Jan", "Feb", "March"],
+        datasets: [
+          {
+            label: "Expense",
+            data: [42560, 20175, 23450],
+            backgroundColor: `${props.THEME.mediumLightVersion}99`,
+            borderColor: `${props.THEME.darkVersion}CC`
+          },
+          {
+            label: "Income",
+            data: [27316, 36980, 35125],
+            backgroundColor: `${props.THEME.mediumLightVersion}99`,
+            borderColor: `${props.THEME.fontColor}CC`
+          }
+        ]
+      },
+      options: {
+        tooltips: {
+          bodyFontColor: props.THEME.fontColor,
+          titleFontColor: props.THEME.fontColor,
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          displayColors: false,
+          mode: 'index',
+        }
+      }
+    });
+  }, []);
+
+  return (
+    <div>
+      <Grid container>
+        <Grid item className={classes.dashboardTile} xs={12}>
+          <Card className={classes.cardBody}>
+            <CardContent>
+              <canvas id="myChart" ref={chartRef} />
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </div>
+  );
 }
 
-export default SummaryChart;
+const mapStateToProps = state => {
+  return {
+    THEME: state.theme
+  };
+};
+
+export default connect(mapStateToProps)(SummaryChart);
