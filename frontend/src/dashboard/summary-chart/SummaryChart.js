@@ -61,7 +61,7 @@ function SummaryChart(props) {
         }
       }
     });
-  }, []);
+  }, [chartRef, props.THEME.fontColor, props.THEME.mediumLightVersion, props.THEME.darkVersion]);
 
   return (
     <div>

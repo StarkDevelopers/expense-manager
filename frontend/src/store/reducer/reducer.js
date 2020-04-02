@@ -18,6 +18,7 @@ export const reducer = (state = initialState, action) => {
       return {
         theme: THEMES.find(t => t.name === action.themeName) || THEMES[0]
       }
+    default:
+      return state;
   }
-  return state;
 }
