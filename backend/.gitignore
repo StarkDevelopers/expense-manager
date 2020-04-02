@@ -1,0 +1,9 @@
+/client
+/node_modules
+test.js
+testConnection.js
+errorEscape.js
+routeRegistration.js
+testConnectionPool.js
+logs/*
+.jshintrc
