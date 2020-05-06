@@ -1,19 +1,17 @@
-const sql = require('mssql');
+const MongoClient = require('mongodb').MongoClient;
 
 const connectionPool = require('./connection-pool');
-const buildConfig = require('../../config/mssql-config');
-
-const domains = require('../../config/domains');
+const buildConfig = require('../../config/mongodb-config');
 
 class DBConnection {
     constructor () {}
 
     async getConnection (server, username, password, database, port) {
-        const connectionKey = connectionPool.generateKey(server, username, database);
+        const connectionKey = connectionPool.generateKey(username);
 
         let connection = connectionPool.get(connectionKey);
 
-        if (connection && connection._connected && connection.connected) {
+        if (connection && connection.isConnected()) {
             return connection;
         }
 
@@ -26,46 +24,39 @@ class DBConnection {
         return connection;
     }
 
-    makeConnection (config) {
-        return new Promise(async (resolve, reject) => {
-            const pool = new sql.ConnectionPool(config);
-        
-            pool.on('error', error => {
-                console.error('Error occured in pool with Config=> ', config, '\nError=> ', error);
-            });
-        
-            try {
-                await pool.connect();
-            } catch (error) {
-                console.error('Error while creating connection', error);
-                return reject(error);
-            }
-        
-            resolve(pool);
-        }); 
+    async makeConnection (config) {
+        const client = new MongoClient(...config);
+        try {
+            return await client.connect();
+        } catch (exception) {
+            throw exception;
+        }
     }
 
     async getUserConnection (request) {
         const username = request.user.Username;
-        const domain = request.user.Domain;
+        const database = request.user.Database;
 
-        const {server} = domains[domain];
+        const server = process.env.MONGODB_SERVER;
 
-        const connectionKey = connectionPool.generateKey(server, username, domain);
+        const connectionKey = connectionPool.generateKey(username);
 
         let connection = connectionPool.get(connectionKey);
 
-        if (connection) {
+        if (connection && connection.isConnected()) {
             return connection;
         }
 
-        const {admin, password} = domains[domain];
+        const { admin, password } = {
+            admin: process.env.MONGODB_DATABASE_ADMIN,
+            password: process.env.MONGODB_DATABASE_ADMIN_PASSWORD
+        };
 
         return await this.getConnection(
             server,
             admin,
             password,
-            domain
+            database
         );
     }
 

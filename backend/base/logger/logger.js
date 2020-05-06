@@ -42,8 +42,8 @@ class Logger {
 }
 
 function writeDebugTrace (request, ...args) {
-    if (request.user.Username && request.user.Domain) {
-        const traceId = `${request.user.Username}@${request.user.Domain}`;
+    if (request.user.Username) {
+        const traceId = `${request.user.Username}`;
         const writers = Repository.getByPattern(traceId);
 
         if (writers && writers.length > 0) {

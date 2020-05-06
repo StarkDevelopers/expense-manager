@@ -14,7 +14,7 @@ class ConnectionPool {
     }
 
     register (key, connection) {
-        if (key && connection && connection._connected && connection.connected) {
+        if (key && connection && connection.isConnected()) {
             connections[key] = connection;
         }
     }
@@ -25,8 +25,8 @@ class ConnectionPool {
         }
     }
 
-    generateKey (server, username, domain) {
-        return domain ? `${username}@${server}|${domain}` : `${username}@${server}`;
+    generateKey (username) {
+        return username.toLowerCase();
     }
 }
 

@@ -25,7 +25,7 @@ function initializeSession (app) {
         resave: false,
         saveUninitialized: false
     }));
-    
+
     /**
      * Passport initialization
      * As well initialize Passport session as we are using persistent login sessions

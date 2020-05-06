@@ -2,7 +2,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 const userFunctions = require('../../utils/users/userFunctions');
-const domains = require('../../config/domains');
 
 /**
  * Defining passport local strategy for Authenticating user at the time of login
@@ -15,14 +14,12 @@ function passportLocalStrategy () {
         passReqToCallback: true
     }, (req, username, password, done) => {
         // Database
-        const domain = username.split('@')[1]; // 'Test3012';
+        const database = process.env.MONGODB_DATABASE;
 
         // Server
-        const server = domains[domain] ? domains[domain].server : '';
+        const server = process.env.MONGODB_SERVER;
 
-        username = username.split('@')[0];
-
-        userFunctions.login(server, username, password, domain, done);
+        userFunctions.login(server, username, password, database, done);
     }));
 
     /**

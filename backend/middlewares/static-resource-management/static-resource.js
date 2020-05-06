@@ -10,13 +10,15 @@ function staticResourcesFromUtility(app, rootDirectory) {
     app.use('/utils', express.static(path.join(rootDirectory, 'views/utils')));
 }
 
-function frontendResources(app, rootDirectory) {
+function serveEJSTemplates(app) {
     /**
      * Using EJS template engine for server side templating
      * For login, register, forgot password, error pages
      */
     app.set('view engine', 'ejs');
+}
 
+function frontendResources(app, rootDirectory) {
     /**
      * Serving static files in Express from client directory
      */
@@ -31,6 +33,7 @@ function frontendResources(app, rootDirectory) {
 }
 
 module.exports = {
+    serveEJSTemplates,
     frontendResources,
     staticResourcesFromUtility
 };

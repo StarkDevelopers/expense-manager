@@ -5,6 +5,9 @@ console.log('PROGRAM CONTEXT', CONTEXT);
 // Built-in modules
 const path = require('path');
 
+// Initialize Environment Variables
+require('dotenv').config();
+
 // 3rd party modules
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,9 +15,11 @@ const bodyParser = require('body-parser');
 // Project modules
 const initializeSession = require('./middlewares/session-management/session-initialize');
 const initializeCSRFToken = require('./middlewares/csrf-management/csrf-token');
+const signupSequence = require('./middlewares/session-management/signup-sequence');
 const loginSequence = require('./middlewares/session-management/login-sequence');
 const logoutSequence = require('./middlewares/session-management/logout-sequence');
 const {
+    serveEJSTemplates,
     frontendResources,
     staticResourcesFromUtility
 } = require('./middlewares/static-resource-management/static-resource');
@@ -29,7 +34,7 @@ const Logger = require('./base/logger/logger');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(require('cookie-parser')());
 
@@ -37,6 +42,11 @@ app.use(require('cookie-parser')());
  * Sets up methods for different levels e.g. info, error on prototype of Logger
  */
 Logger.setupMethods();
+
+/**
+ * Seriveg EJS templates from views/ directory
+ */
+serveEJSTemplates(app);
 
 /**
  * Initializes default winston logger for console and file transports
@@ -56,6 +66,12 @@ initializeSession(app);
  * Checks CSRF token in incoming requests
  */
 initializeCSRFToken(app);
+
+/**
+ * Sign up users with email verification
+ * Redirects to / or requested page
+ */
+signupSequence(app);
 
 /**
  * Logs in user with passport local-strategy

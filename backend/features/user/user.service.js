@@ -26,10 +26,8 @@ class UserService extends BaseService {
         if (user.Password) {
             await this.userRepository.updateSystemUser(user);
             delete user.Password;
-            if (this.user && this.user.Username && this.user.Domain && this.user.Server) {
-                const connectionKey = connectionPool.generateKey(this.user.Server,
-                    this.user.Username,
-                    this.user.Domain);
+            if (this.user && this.user.Username) {
+                const connectionKey = connectionPool.generateKey(this.user.Username);
                 connectionPool.unregister(connectionKey);
             }
         }

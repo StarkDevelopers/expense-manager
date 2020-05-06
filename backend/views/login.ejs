@@ -5,401 +5,202 @@
     <title>Stark Mailer Login</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+      crossorigin="anonymous"
+    />
     <style>
-    * {
-      margin: 0px; 
-      padding: 0px; 
-      box-sizing: border-box;
-    }
-    body, html {
-      height: 100%;
-      font-family: Verdana, Geneva, sans-serif;
-    }
-    a {
-      font-family: Verdana, Geneva, sans-serif;
-      font-size: 14px;
-      line-height: 1.7;
-      color: #666666;
-      margin: 0px;
-      transition: all 0.4s;
-      -webkit-transition: all 0.4s;
-      -o-transition: all 0.4s;
-      -moz-transition: all 0.4s;
-    }
-    a:focus {
-      outline: none !important;
-    }
-    a:hover {
-      text-decoration: none;
-      color: #333333;
-    }
-    h1,h2,h3,h4,h5,h6 {
-      margin: 0px;
-    }
-    p {
-      font-family: Verdana, Geneva, sans-serif;
-      font-size: 14px;
-      line-height: 1.7;
-      color: #666666;
-      margin: 0px;
-    }
-    ul, li {
-      margin: 0px;
-      list-style-type: none;
-    }
-    input {
-      outline: none;
-      border: none;
-    }
-    textarea {
-      outline: none;
-      border: none;
-    }
-    textarea:focus, input:focus {
-      border-color: transparent !important;
-    }
-    input:focus::-webkit-input-placeholder { color:transparent; }
-    input:focus:-moz-placeholder { color:transparent; }
-    input:focus::-moz-placeholder { color:transparent; }
-    input:focus:-ms-input-placeholder { color:transparent; }
-    textarea:focus::-webkit-input-placeholder { color:transparent; }
-    textarea:focus:-moz-placeholder { color:transparent; }
-    textarea:focus::-moz-placeholder { color:transparent; }
-    textarea:focus:-ms-input-placeholder { color:transparent; }
-    input::-webkit-input-placeholder { color: #adadad;}
-    input:-moz-placeholder { color: #adadad;}
-    input::-moz-placeholder { color: #adadad;}
-    input:-ms-input-placeholder { color: #adadad;}
-    textarea::-webkit-input-placeholder { color: #adadad;}
-    textarea:-moz-placeholder { color: #adadad;}
-    textarea::-moz-placeholder { color: #adadad;}
-    textarea:-ms-input-placeholder { color: #adadad;}
-    button {
-      outline: none !important;
-      border: none;
-      background: transparent;
-    }
-    button:hover {
-      cursor: pointer;
-    }
-    iframe {
-      border: none !important;
-    }
-    .txt1 {
-      font-family: Verdana, Geneva, sans-serif;
-      font-size: 15px;
-      color: #999999;
-      line-height: 1.5;
-    }
-    .txt2 {
-      font-family: Verdana, Geneva, sans-serif;
-      font-size: 15px;
-      color: #57b846;
-      line-height: 1.5;
-    }
-    .limiter {
-      width: 100%;
-      margin: 0 auto;
-    }
-    .container-login100 {
-      width: 100%;  
-      min-height: 100vh;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -moz-box;
-      display: -ms-flexbox;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      padding: 15px;
-      background: #fff;  
-    }
-    .wrap-login100 {
-      width: 390px;
-      background: #fff;
-    }
-    .login100-form {
-      width: 100%;
-    }
-    .login100-form-title {
-      display: block;
-      font-family: Verdana, Geneva, sans-serif;
-      font-size: 39px;
-      color: #333333;
-      line-height: 1.2;
-      text-align: center;
-    }
-    .login100-form-avatar {
-      display: block;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin: 0 auto;
-    }
-    .login100-form-avatar img {
-      width: 100%;
-    }
-    .wrap-input100 {
-      width: 100%;
-      position: relative;
-      border-bottom: 2px solid #d9d9d9;
-    }
-    .input100 {
-      font-family: Verdana, Geneva, sans-serif;
-      font-size: 18px;
-      color: #555555;
-      line-height: 1.2;
-      display: block;
-      width: 100%;
-      height: 52px;
-      background: transparent;
-      padding: 0 5px;
-    }
-    .focus-input100 {
-      position: absolute;
-      display: block;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-    }
-    .focus-input100::before {
-      content: "";
-      display: block;
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      -webkit-transition: all 0.4s;
-      -o-transition: all 0.4s;
-      -moz-transition: all 0.4s;
-      transition: all 0.4s;
-      background: #57b846;
-    }
-    .focus-input100::after {
-      font-family: Verdana, Geneva, sans-serif;
-      font-size: 18px;
-      color: #999999;
-      line-height: 1.2;
-      content: attr(data-placeholder);
-      display: block;
-      width: 100%;
-      position: absolute;
-      top: 15px;
-      left: 0px;
-      padding-left: 5px;
-      -webkit-transition: all 0.4s;
-      -o-transition: all 0.4s;
-      -moz-transition: all 0.4s;
-      transition: all 0.4s;
-    }
-    .input100:focus + .focus-input100::after {
-      top: -20px;
-      font-size: 15px;
-    }
-    .input100:focus + .focus-input100::before {
-      width: 100%;
-    }
-    .has-val.input100 + .focus-input100::after {
-      top: -20px;
-      font-size: 15px;
-    }
-    .has-val.input100 + .focus-input100::before {
-      width: 100%;
-    }
-    .container-login100-form-btn {
-      width: 100%;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -moz-box;
-      display: -ms-flexbox;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .login100-form-btn, .login-errors {
-      font-family: Verdana, Geneva, sans-serif;
-      font-size: 16px;
-      color: #fff;
-      line-height: 1.2;
-      text-transform: uppercase;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -moz-box;
-      display: -ms-flexbox;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0 20px;
-      width: 100%;
-      height: 50px;
-      background-color: #57b846;
-      border-radius: 25px;
-      box-shadow: 0 10px 30px 0px rgba(87, 184, 70, 0.5);
-      -moz-box-shadow: 0 10px 30px 0px rgba(87, 184, 70, 0.5);
-      -webkit-box-shadow: 0 10px 30px 0px rgba(87, 184, 70, 0.5);
-      -o-box-shadow: 0 10px 30px 0px rgba(87, 184, 70, 0.5);
-      -ms-box-shadow: 0 10px 30px 0px rgba(87, 184, 70, 0.5);
-      -webkit-transition: all 0.4s;
-      -o-transition: all 0.4s;
-      -moz-transition: all 0.4s;
-      transition: all 0.4s;
-    }
-    .login100-form-btn:hover  {
-      background-color: #333333;
-      box-shadow: 0 10px 30px 0px rgba(51, 51, 51, 0.5);
-      -moz-box-shadow: 0 10px 30px 0px rgba(51, 51, 51, 0.5);
-      -webkit-box-shadow: 0 10px 30px 0px rgba(51, 51, 51, 0.5);
-      -o-box-shadow: 0 10px 30px 0px rgba(51, 51, 51, 0.5);
-      -ms-box-shadow: 0 10px 30px 0px rgba(51, 51, 51, 0.5);
-    }
-    .login-errors {
-      background-color: #CC0000;
-      opacity: 0.8;
-      border-radius: 0px;
-      margin-top: 0px;
-      padding: 0 10px;
-      font-size: 12px;
-      height: 30px;
-      box-shadow: none;
-    }
-    .validate-input {
-      position: relative;
-    }
-    .alert-validate::before {
-      content: attr(data-validate);
-      position: absolute;
-      max-width: 70%;
-      background-color: #fff;
-      border: 1px solid #c80000;
-      border-radius: 2px;
-      padding: 4px 25px 4px 10px;
-      top: 50%;
-      -webkit-transform: translateY(-50%);
-      -moz-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-      -o-transform: translateY(-50%);
-      transform: translateY(-50%);
-      right: 0px;
-      pointer-events: none;
-      font-family: Verdana, Geneva, sans-serif;
-      color: #c80000;
-      font-size: 13px;
-      line-height: 1.4;
-      text-align: left;
-      visibility: hidden;
-      opacity: 0;
-      -webkit-transition: opacity 0.4s;
-      -o-transition: opacity 0.4s;
-      -moz-transition: opacity 0.4s;
-      transition: opacity 0.4s;
-    }
-    .alert-validate::after {
-      content: "\f06a";
-      font-family: FontAwesome;
-      font-size: 16px;
-      color: #c80000;
-      display: block;
-      position: absolute;
-      background-color: #fff;
-      top: 50%;
-      -webkit-transform: translateY(-50%);
-      -moz-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-      -o-transform: translateY(-50%);
-      transform: translateY(-50%);
-      right: 5px;
-    }
-    .alert-validate:hover:before {
-      visibility: visible;
-      opacity: 1;
-    }
-    @media (max-width: 992px) {
-      .alert-validate::before {
-        visibility: visible;
-        opacity: 1;
+      input:focus {
+        outline: none;
       }
-    }
-    .login-more li {
-      position: relative;
-      padding-left: 20px;
-    }
-    .login-more li::before {
-      content: "\f084";
-      font-family: FontAwesome;
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      color: #999999;
-      -webkit-transform: translateY(-50%);
-      -moz-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-      -o-transform: translateY(-50%);
-      transform: translateY(-50%);
-    }
-    .p-t-85 {padding-top: 45px;}
-    .p-b-20 {padding-bottom: 20px;}
-    .p-b-70 {padding-bottom: 45px;}
-    .m-t-85 {margin-top: 40px;}
-    .m-b-35 {margin-bottom: 35px;}
-    .m-b-50 {margin-bottom: 30px;}
-    .p-t-190 {padding-top: 30px;}
-    .m-b-8 {margin-bottom: 8px;}
+      ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #a8aed2;
+        opacity: 0.5; /* Firefox */
+        font-size: 1rem;
+        text-align: right;
+      }
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #a8aed2;
+      }
+      ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #a8aed2;
+      }
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover, 
+      input:-webkit-autofill:focus {
+        color: #a8aed2 !important;
+        -webkit-text-fill-color: #a8aed2 !important;
+        box-shadow: 0 0 0 1000px #464c6c inset, 3px 3px 5px 1px #2e324d;
+        -webkit-box-shadow: 0 0 0 1000px #464c6c inset, 3px 3px 5px 1px #2e324d;
+      }
+      html, body {
+        height: 100%;
+        background-image: linear-gradient(to right, #464c6c, #353c5c);
+        color: #a8aed2;
+        font-family: "Ubuntu", sans-serif;
+      }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+      .cardBody {
+        background-image: linear-gradient(to right, #464c6c, #404767);
+        border-width: 0px;
+        box-shadow: 3px 3px 5px 1px #2e324d;
+        padding: 2rem;
+        text-align: center;
+        width: 50%;
+      }
+      .title {
+        font-family: 'Limelight', cursive;
+      }
+      .smalltitle {
+        margin-bottom: 2rem;
+      }
+      .field {
+        width: 100%;
+        height: 3rem;
+        font-size: 1.5rem;
+        background-image: linear-gradient(to right, #464c6c, #404767);
+        border-width: 0px;
+        box-shadow: 3px 3px 5px 1px #2e324d;
+        padding: 0.75rem;
+        box-sizing: border-box;
+        margin-bottom: 1rem;
+        color: #a8aed2;
+      }
+      .submitButton {
+        margin-top: 1rem;
+        padding: 0;
+        cursor: pointer;
+      }
+      .helpText {
+        text-align: left;
+        cursor: pointer;
+      }
+      .sendCodeText {
+        text-align: right;
+        cursor: pointer;
+      }
+      .sendCodeInterval {
+        text-align: right;
+      }
+      .signin {
+        display: block;
+      }
+      .signup {
+        display: none;
+      }
+      .message {
+        z-index: 1000;
+        display: none;
+        width: 24%;
+        position: absolute;
+        top: 1rem;
+        text-align: center;
+        left: 50%;
+        margin-left: -12%;
+      }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Limelight&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100 p-t-85 p-b-20">
-                <form class="login100-form validate-form" method="POST" action="/auth/login">
-                    <span class="login100-form-title p-b-70">
-                        Stark Mailer
-                    </span>
-                    <% if (locals.error) { %>
-                      <div class="container-login100-form-btn">
-                        <div class="login-errors">
-                          <%= error.message %>
-                        </div>
-                      </div>
-                    <% } %>
-                    <!-- <span class="login100-form-avatar">
-                        <img src="images/avatar-01.jpg" alt="AVATAR">
-                    </span> -->
-                    <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate="Enter username">
-                        <input class="input100" type="text" name="Username">
-                        <span class="focus-input100" data-placeholder="Username"></span>
-                    </div>
-                    <div class="wrap-input100 validate-input m-b-50" data-validate="Enter password">
-                        <input class="input100" type="password" name="Password">
-                        <span class="focus-input100" data-placeholder="Password"></span>
-                    </div>
-                    <div class="container-login100-form-btn">
-                        <button class="login100-form-btn">
-                            Login
-                        </button>
-                    </div>
-                    <ul class="login-more p-t-190">
-                        <li class="m-b-8">
-                            <span class="txt1">
-                                Forgot
-                            </span>
-                            <a href="#" class="txt2">
-                                Username / Password?
-                            </a>
-                        </li>
-                    </ul>
-                </form>
-            </div>
-        </div>
+  <div class="alert alert-primary message" role="alert"></div>
+  <div class="container">
+    <div class="row cardBody">
+      <div class="col-12">
+        <h1 class="title">DINERO</h1>
+        <h6 class="smalltitle">Manage money in style</h6>
+        <form action="/" id="signin" class="signin">
+          <input type="text" value="" placeholder="Username" class="field" />
+          <input type="password" value="" placeholder="Password" class="field" />
+          <input type="submit" value="Sign In" class="field submitButton" />
+          <h6 class="helpText" onclick="changeForm('signup')">Does not have an account?</h6>
+        </form>
+        <form action="/" id="signup" class="signup">
+          <input type="email" value="" placeholder="E-mail" class="field" id="email" />
+          <h6 class="sendCodeText" id="sendCodeText" onclick="sendCode()">Send code</h6>
+          <h6 class="sendCodeInterval" id="sendCodeInterval"></h6>
+          <input type="password" value="" placeholder="E-mail Code" class="field" />
+          <input type="text" value="" placeholder="Username" class="field" />
+          <input type="password" value="" placeholder="Password" class="field" />
+          <input type="submit" value="Sign Up" class="field submitButton" />
+          <h6 class="helpText" onclick="changeForm('signin')">Already have an account?</h6>
+        </form>
+      </div>
     </div>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/utils/login-script.js"></script>
+  </div>
+  <script
+    src="http://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    let timeout = null;
+    let sendCodeInterval = null;
+    let interval = 60;
+    let changeForm = (to) => {
+      if (to === 'signup') {
+        $('#signin').css('display', 'none');
+        $('#signup').css('display', 'block');
+      } else if (to === 'signin') {
+        $('#signup').css('display', 'none');
+        $('#signin').css('display', 'block');
+      }
+    };
+    let sendCode = () => {
+      const email = $('#email').val();
+      const pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+      const valid = pattern.test(email);
+      if (!valid) {
+        showAlert('Enter a valid E-mail', 'danger');
+      } else {
+        $('#sendCodeText').css('display', 'none');
+        $('#sendCodeInterval').css('display', 'block');
+        sendCodeInterval = setInterval(() => {
+          if (interval === 0) {
+            clearInterval(sendCodeInterval);
+            $('#sendCodeInterval').css('display', 'none');
+            $('#sendCodeText').css('display', 'block');
+            interval = 60;
+          }
+          $('#sendCodeInterval').html(`Send code again in ${--interval}s`);
+        }, 1000);
+        // process Email
+        $.post( '/sendSignupCode', { email } )
+          .done(data => {
+            showAlert('Code sent', 'success');
+          })
+          .fail(error => {
+            showAlert(error.responseText, 'danger');
+          });
+      }
+    };
+    let showAlert = (message, level) => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+      $('.alert').css('display', 'block')
+        .html(message)
+        .removeClass('alert-success')
+        .removeClass('alert-danger')
+        .addClass(`alert-${level}`);
+      timeout = setTimeout(() => {
+        $('.alert').css('display', 'none');
+      }, 2000);
+    }
+  </script>
 </body>
 </html>

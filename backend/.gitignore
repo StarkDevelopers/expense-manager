@@ -6,4 +6,6 @@ errorEscape.js
 routeRegistration.js
 testConnectionPool.js
 logs/*
+.env
 .jshintrc
+/dbmigration

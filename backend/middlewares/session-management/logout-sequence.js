@@ -4,10 +4,10 @@ function logoutSequence(app) {
     app.all('/auth/logout', (req, res, next) => {
         clearCookies(res);
 
-        if (req.user && req.user.Username && req.user.Domain && req.user.Server) {
+        if (req.user && req.user.Username && req.user.Database && req.user.Server) {
             const connectionKey = connectionPool.generateKey(req.user.Server,
                 req.user.Username,
-                req.user.Domain);
+                req.user.Database);
             connectionPool.unregister(connectionKey);
         }
 
