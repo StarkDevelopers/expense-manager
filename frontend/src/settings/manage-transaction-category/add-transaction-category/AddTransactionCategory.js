@@ -1,5 +1,5 @@
-import React from 'react';
-import { Container, Grid, Typography, InputBase, Select, MenuItem, Card, CardContent } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Container, Grid, Typography, InputBase, Select, MenuItem, Card, CardContent, Button } from '@material-ui/core';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
@@ -7,7 +7,7 @@ const field = (THEME) => {
   return {
     height: '3rem',
     fontFamily: "\"Ubuntu\", sans-serif",
-    fontSize: '2rem',
+    fontSize: '1.25rem',
     backgroundImage: `linear-gradient(to right, ${THEME.lightVersion}, ${THEME.mediumLightVersion})`,
     borderWidth: '0px',
     borderRadius: '0.75rem',
@@ -61,6 +61,7 @@ const getComponentStyle = THEME => {
     },
     buttonField: {
       ...field(THEME),
+      cursor: 'pointer',
       textAlign: 'center',
       marginTop: '0.75rem',
       marginBottom: '0.25rem',
@@ -90,6 +91,17 @@ function AddTransactionCategory(props) {
   const theme = getMuiTheme(props.THEME);
   const useStyles = getComponentStyle(props.THEME);
   const classes = useStyles();
+
+  const [categoryName, setCategoryName] = useState('');
+  const [categoryType, setCategoryType] = useState('');
+  const transactionTypes = props.transactionTypes || [];
+
+  const submitTransactionCategory = () => {
+    props.addCategory(categoryName, categoryType);
+    setCategoryName('');
+    setCategoryType('');
+  };
+
   return (
     <div>
       <Container className={classes.container}>
@@ -104,6 +116,8 @@ function AddTransactionCategory(props) {
                 <InputBase
                   className={classes.textField}
                   type="text"
+                  value={categoryName}
+                  onChange={e => setCategoryName(e.target.value)}
                   placeholder="Transaction Category"
                   inputProps={{ 'aria-label': 'naked' }} />
 
@@ -111,17 +125,22 @@ function AddTransactionCategory(props) {
                   <Select
                     className={classes.selectField}
                     id="demo-simple-select"
-                    value={1}
+                    value={categoryType}
+                    onChange={e => setCategoryType(e.target.value)}
                   >
-                    <MenuItem value={1}>Income</MenuItem>
-                    <MenuItem value={2}>Expense</MenuItem>
-                    <MenuItem value={3}>Investment</MenuItem>
+                    {
+                      transactionTypes.map(type => (
+                        <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
+                      ))
+                    }
                   </Select>
                 </ThemeProvider>
 
-                <Typography className={classes.buttonField}>
+                <Button className={classes.buttonField}
+                  onClick={submitTransactionCategory}
+                  disabled={!categoryName || !categoryType}>
                   Add
-                </Typography>
+                </Button>
               </CardContent>
             </Card>
           </Grid>
@@ -133,8 +152,15 @@ function AddTransactionCategory(props) {
 
 const mapStateToProps = state => {
   return {
-    THEME: state.theme
+    THEME: state.theme,
+    transactionTypes: state.transactionTypes
   };
 };
 
-export default connect(mapStateToProps)(AddTransactionCategory);
+const mapDispatchToProps = dispatch => {
+  return {
+    addCategory: (name, categoryType) => dispatch({ type: 'ADD_CATEGORY', name, categoryType }),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddTransactionCategory);

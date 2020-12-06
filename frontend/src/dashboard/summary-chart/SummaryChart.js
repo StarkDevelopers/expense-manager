@@ -27,29 +27,25 @@ function SummaryChart(props) {
   const classes = useStyles();
   const chartRef = React.createRef();
 
+  const transactions = props.transactions || [];
+  const income = transactions.filter(transaction => transaction.type === 'Income').reduce((p, c) => p + c.amount, 0);
+  const expense = transactions.filter(transaction => transaction.type === 'Expense').reduce((p, c) => p + c.amount, 0);
+  const investment = transactions.filter(transaction => transaction.type === 'Investment').reduce((p, c) => p + c.amount, 0);
+
   useEffect(() => {
     const summaryChartRef = chartRef.current.getContext("2d");
     Chart.defaults.global.legend.display = false;
     Chart.defaults.global.defaultFontFamily = "\"Ubuntu\", sans-serif";
     Chart.defaults.global.defaultFontColor = props.THEME.fontColor;
     new Chart(summaryChartRef, {
-      type: "line",
+      type: "bar",
       data: {
-        labels: ["Jan", "Feb", "March"],
-        datasets: [
-          {
-            label: "Expense",
-            data: [42560, 20175, 23450],
-            backgroundColor: `${props.THEME.mediumLightVersion}99`,
-            borderColor: `${props.THEME.darkVersion}CC`
-          },
-          {
-            label: "Income",
-            data: [27316, 36980, 35125],
-            backgroundColor: `${props.THEME.mediumLightVersion}99`,
-            borderColor: `${props.THEME.fontColor}CC`
-          }
-        ]
+        labels: ["Expense", "Income", "Investment"],
+        datasets: [{
+          maxBarThickness: 80,
+          backgroundColor: props.THEME.lightBackground + '66',
+          data: [expense, income, investment]
+        }]
       },
       options: {
         tooltips: {
@@ -58,6 +54,13 @@ function SummaryChart(props) {
           backgroundColor: 'rgba(0, 0, 0, 0)',
           displayColors: false,
           mode: 'index',
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
         }
       }
     });
@@ -80,7 +83,8 @@ function SummaryChart(props) {
 
 const mapStateToProps = state => {
   return {
-    THEME: state.theme
+    THEME: state.theme,
+    transactions: state.transactions
   };
 };
 

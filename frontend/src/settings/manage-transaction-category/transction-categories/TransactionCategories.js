@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Card, CardContent, Chip, Typography } from '@material-ui/core';
-import { Clear } from '@material-ui/icons';
+import { Clear, ShoppingCart, AttachMoney, TrendingUp } from '@material-ui/icons';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
@@ -60,10 +60,22 @@ const getStyledChip = THEME => {
   })(Chip);
 };
 
+const getIcon = type => {
+  switch (type) {
+    case 'Income':
+      return <AttachMoney />
+    case 'Expense':
+      return <ShoppingCart />
+    case 'Investment':
+      return <TrendingUp />
+  }
+};
+
 function TransactionCategories(props) {
   const StyleChip = getStyledChip(props.THEME);
   const useStyles = getComponentStyle(props.THEME);
   const classes = useStyles();
+  const transactionCategories = props.transactionCategories || [];
   return (
     <div className={classes.root}>
       <Grid container className={classes.container}>
@@ -74,132 +86,20 @@ function TransactionCategories(props) {
                 Transaction Categories
               </Typography>
               <div className={classes.categoriesContainer}>
-                <StyleChip
-                  size="medium"
-                  label="Salary"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Freelancing"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Shopping"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Trip"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Food"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Transportation"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="IT Services"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Salary"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Freelancing"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Shopping"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Trip"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Food"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Transportation"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="IT Services"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Salary"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Freelancing"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Shopping"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Trip"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Food"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="Transportation"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
-                <StyleChip
-                  size="medium"
-                  label="IT Services"
-                  deleteIcon={<Clear />}
-                  onDelete={() => {}}
-                />
+                {
+                  transactionCategories.length ?
+                  transactionCategories.map(category => (
+                    <StyleChip
+                      icon={getIcon(category.type)}
+                      key={category.id}
+                      size="medium"
+                      label={category.name}
+                      deleteIcon={<Clear />}
+                      onDelete={() => props.deleteCategory(category.id)}
+                    />
+                  )) :
+                  <Typography variant="caption">No category found</Typography>
+                }
               </div>
             </CardContent>
           </Card>
@@ -211,8 +111,15 @@ function TransactionCategories(props) {
 
 const mapStateToProps = state => {
   return {
-    THEME: state.theme
+    THEME: state.theme,
+    transactionCategories: state.transactionCategories
   };
 };
 
-export default connect(mapStateToProps)(TransactionCategories);
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteCategory: id => dispatch({ type: 'DELETE_CATEGORY', id }),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionCategories);

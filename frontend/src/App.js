@@ -1,16 +1,17 @@
 import React from 'react';
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Route } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { connect } from 'react-redux';
+
 import TopBar from './top-bar/TopBar';
 import Dashboard from './dashboard/Dashboard';
 import Transactions from './transactions/Transactions';
 import ManageTransactions from './manage-transactions/ManageTransactions';
 import Settings from './settings/Settings';
-import { Route } from 'react-router-dom';
 import './App.css';
-import { connect } from 'react-redux';
 import { GlobalStyles } from './globalStyles';
-import { ThemeProvider } from 'styled-components';
 
 const getComponentStyle = THEME => {
   return makeStyles(reactTheme => ({
@@ -19,7 +20,7 @@ const getComponentStyle = THEME => {
       padding: '0px',
       height: '600px',
       backgroundImage: `linear-gradient(to right, ${THEME.lightVersion}, ${THEME.darkVersion})`,
-      boxShadow: `35px 35px 50px 10px ${THEME.boxShadow}`,
+      boxShadow: `25px 25px 50px 10px ${THEME.mainShadow}`,
       borderRadius: '2.5rem',
       textAlign: 'center',
       boxSizing: 'border-box',
@@ -35,6 +36,14 @@ const getComponentStyle = THEME => {
 function App(props) {
   const useStyles = getComponentStyle(props.THEME);
   const classes = useStyles();
+  const [state, setState] = React.useState({
+    open: false,
+    message: ''
+  });
+
+  const handleClose = () => {
+    setState({ open: false });
+  };
 
   return (
     <ThemeProvider theme={props.THEME}>
@@ -53,6 +62,13 @@ function App(props) {
             </Grid>
           </Grid>
         </Container>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={state.open}
+          onClose={handleClose}
+          message={state.message}
+          key={'top-center'}
+        />
       </div>
     </ThemeProvider>
   );
@@ -64,4 +80,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, null)(App);

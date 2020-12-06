@@ -1,5 +1,5 @@
-import React from 'react';
-import { Container, Grid, InputAdornment, Typography, InputBase, Select, MenuItem, Card, CardContent } from '@material-ui/core';
+import React, { useState }  from 'react';
+import { Container, Grid, InputAdornment, Typography, InputBase, Select, MenuItem, Card, CardContent, Button } from '@material-ui/core';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
@@ -43,7 +43,7 @@ const getComponentStyle = THEME => {
     textField: field(THEME),
     descriptionField: {
       ...field(THEME),
-      fontSize: '1.5rem'
+      fontSize: '1.25rem'
     },
     selectField: {
       ...field(THEME),
@@ -94,6 +94,19 @@ function AddTransaction(props) {
   const theme = getMuiTheme(props.THEME);
   const useStyles = getComponentStyle(props.THEME);
   const classes = useStyles();
+
+  const [amount, setAmount] = useState(0);
+  const [category, setCategory] = useState(0);
+  const [description, setDescription] = useState('');
+  const transactionCategories = props.transactionCategories || [];
+
+  const submitTransaction = () => {
+    props.addTransaction(amount, category, description);
+    setAmount(0);
+    setCategory(0);
+    setDescription('');
+  }
+
   return (
     <div>
       <Container className={classes.container}>
@@ -108,6 +121,8 @@ function AddTransaction(props) {
                 <InputBase
                   className={classes.textField}
                   type="number"
+                  value={amount}
+                  onChange={e => setAmount(e.target.value)}
                   placeholder="Transaction amount"
                   startAdornment={<InputAdornment position="start"><Typography variant="h5" className={classes.currency}>₹</Typography></InputAdornment>}
                   inputProps={{ 'aria-label': 'naked' }} />
@@ -116,24 +131,30 @@ function AddTransaction(props) {
                   <Select
                     className={classes.selectField}
                     id="demo-simple-select"
-                    value={0}
+                    value={category}
+                    onChange={e => setCategory(e.target.value)}
                   >
-                    <MenuItem value={0}>None</MenuItem>
-                    <MenuItem value={1}>Salary</MenuItem>
-                    <MenuItem value={2}>Freelancing</MenuItem>
-                    <MenuItem value={3}>Shopping</MenuItem>
+                    {
+                      transactionCategories.map(category => (
+                        <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
+                      ))
+                    }
                   </Select>
                 </ThemeProvider>
 
                 <InputBase
                   className={classes.descriptionField}
                   type="text"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
                   placeholder="Description"
                   inputProps={{ 'aria-label': 'naked' }} />
 
-                <Typography className={classes.buttonField}>
+                <Button className={classes.buttonField}
+                  onClick={submitTransaction}
+                  disabled={!amount || !category}>
                   Add
-                </Typography>
+                </Button>
               </CardContent>
             </Card>
           </Grid>
@@ -145,8 +166,15 @@ function AddTransaction(props) {
 
 const mapStateToProps = state => {
   return {
-    THEME: state.theme
+    THEME: state.theme,
+    transactionCategories: state.transactionCategories
   };
 };
 
-export default connect(mapStateToProps)(AddTransaction);
+const mapDispatchToProps = dispatch => {
+  return {
+    addTransaction: (amount, category, description) => dispatch({ type: 'ADD_TRANSACTION', amount, category, description }),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddTransaction);

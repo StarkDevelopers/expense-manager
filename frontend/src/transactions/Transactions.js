@@ -38,82 +38,18 @@ const getComponentStyle = THEME => {
     date: {
       display: 'inline',
       float: 'right'
+    },
+    noTransaction: {
+      marginLeft: '2rem'
     }
   }));
 }
 
-const transactions = [
-  {
-    type: 'Shopping',
-    date: '28-03-2020',
-    amount: 3450.00,
-    description: 'Myntra - 4 Shirts'
-  },
-  {
-    type: 'Salary',
-    date: '28-03-2020',
-    amount: 43450.00,
-    description: 'Job Salary'
-  },
-  {
-    type: 'Shopping',
-    date: '28-03-2020',
-    amount: 13450.00,
-    description: 'Flipkart - computer table'
-  },
-  {
-    type: 'IT Services',
-    date: '28-03-2020',
-    amount: 450.00,
-    description: 'AWS - Lambda, ECS'
-  },
-  {
-    type: 'Shopping',
-    date: '18-03-2020',
-    amount: 3450.00,
-    description: 'Lorem Ipsum is simply dummy text of print print print text of print print print'
-  },
-  {
-    type: 'Shopping',
-    date: '28-03-2020',
-    amount: 3450.00,
-    description: 'Myntra - 4 Shirts'
-  },
-  {
-    type: 'Freelancing',
-    date: '12-03-2020',
-    amount: 33450.00,
-    description: 'Upwork - Luca, Praneeth, Varun'
-  },
-  {
-    type: 'Shopping',
-    date: '28-03-2020',
-    amount: 3450.00,
-    description: 'Myntra - 4 Shirts'
-  },
-  {
-    type: 'Shopping',
-    date: '28-03-2020',
-    amount: 3450.00,
-    description: 'Myntra - 4 Shirts'
-  },
-  {
-    type: 'Freelancing',
-    date: '12-03-2020',
-    amount: 33450.00,
-    description: 'Upwork - Luca, Praneeth, Varun'
-  },
-  {
-    type: 'Shopping',
-    date: '28-03-2020',
-    amount: 3450.00,
-    description: 'Lorem Ipsum is simply dummy text of print text of print print print'
-  },
-];
-
 function Transactions(props) {
   const useStyles = getComponentStyle(props.THEME);
   const classes = useStyles();
+
+  const transactions = props.transactions || [];
   return (
     <div className={classes.root}>
       <Grid container>
@@ -122,21 +58,24 @@ function Transactions(props) {
             <Card className={classes.cardBody}>
               <CardContent className={classes.cartContent}>
                 <Typography variant="body1" className={classes.category}>
-                  {transaction.type}
+                  {transaction.transactionType}
                 </Typography>
                 <Typography variant="body1" className={classes.date}>
-                  {transaction.date}
+                  {new Date(transaction.date).toJSON().substr(0, 10)}
                 </Typography>
                 <Typography variant="h5" className={classes.figure}>
                   <Typography variant="body1" className={classes.currency}>₹</Typography> {transaction.amount}
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="caption">
                   {transaction.description}
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
         ))}
+        {
+          !transactions.length && <Typography variant="caption" className={classes.noTransaction}>No Transaction found</Typography>
+        }
       </Grid>
     </div>
   );
@@ -144,7 +83,8 @@ function Transactions(props) {
 
 const mapStateToProps = state => {
   return {
-    THEME: state.theme
+    THEME: state.theme,
+    transactions: state.transactions
   };
 };
 

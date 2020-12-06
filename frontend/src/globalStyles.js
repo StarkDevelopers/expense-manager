@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   body {
-    background-image: linear-gradient(to right, ${({ theme }) => [theme.mediumLightVersion, theme.darkVersion].join(', ')});
+    background-image: linear-gradient(to right, ${({ theme }) => [theme.lightBackground, theme.darkBackground].join(', ')});
   }
 
   /* Remove arrows in number field */
@@ -47,16 +47,16 @@ export const GlobalStyles = createGlobalStyle`
 
   /* Track */
   ::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme.mediumLightVersion}; 
+    background: ${({ theme }) => theme.lightVersion};
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.fontColor}; 
+    background: ${({ theme }) => theme.darkBackground};
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: ${({ theme }) => theme.fontColor}; 
+    background: ${({ theme }) => theme.darkBackground};
   }
 `
